@@ -1,11 +1,20 @@
 const mongoose = require('mongoose');
 
 module.exports = () => {
+
+  const encodedUri = process.env.MONGODB_URI;
+  const buff = Buffer.from(encodedUri, 'base64');
+  const dbUri = buff.toString('ascii');
+
+  const encodedPass = process.env.DB_PASS;
+  const passBuff = Buffer.from(encodedPass, 'base64');
+  const dbPass = passBuff.toString('ascii');
+
   mongoose
-    .connect(process.env.MONGODB_URI, {
+    .connect(dbUri, {
       dbName: process.env.DB_NAME,
       user: process.env.DB_USER,
-      pass: process.env.DB_PASS,
+      pass: dbPass,
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false
